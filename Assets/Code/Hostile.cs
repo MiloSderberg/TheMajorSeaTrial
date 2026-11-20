@@ -36,6 +36,17 @@ public class Hostile : MonoBehaviour
     public bool ultraInstinct;
     public bool doom;
 
+    [Header("Health")]
+    public int health;
+    int currentHealth;
+    public float iFrames;
+    float iTime;
+    public GameObject hurtEffect;
+
+    [Header("Death")]
+    public GameObject[] deathObjects;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -44,6 +55,7 @@ public class Hostile : MonoBehaviour
         backForthRand = Random.Range(0f, 1f);
         fireRate = fireRate + Random.Range(0f, .1f * fireRate);
         if (spin == false) spinSpeed = 0;
+        currentHealth = health;
     }
 
     // Update is called once per frame
@@ -55,6 +67,43 @@ public class Hostile : MonoBehaviour
         {
             Attack();
         }
+
+        if (iTime >= 0)
+        {
+            iTime -= Time.deltaTime;
+        }
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        Hurt(collision);
+    }
+
+    void Hurt(Collider2D collision)
+    {
+        Damage dmg = collision.GetComponent<Damage>();
+        if (dmg != null)
+        {
+            if (dmg.hurtEnemy && iTime <= 0)
+            {
+                if (hurtEffect != null) Instantiate(hurtEffect, transform);
+                currentHealth -= dmg.damageAmmount;
+                iTime = iFrames;
+            }
+        }
+    }
+    
+    public void Die()
+    {
+        foreach (GameObject g in deathObjects)
+        {
+            Instantiate(g, transform);
+        }
+        Destroy(gameObject);
     }
 
     void Move()
@@ -105,7 +154,6 @@ public class Hostile : MonoBehaviour
 
                     float rot = RotCalc(i, s, isEven);
                     FireBullet(rot);
-                    print($"{i}, {rot}");
                 }
             }
             else
