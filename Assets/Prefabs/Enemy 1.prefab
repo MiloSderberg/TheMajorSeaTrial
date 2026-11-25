@@ -135,6 +135,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 518cd38fc61f2e948be3ff4d97a78cc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hostile
+  pice: 0
   speed: 1
   zigzag: 1
   zigzagSpeed: 4
@@ -143,7 +144,7 @@ MonoBehaviour:
   backForthRate: 2
   spin: 0
   spinSpeed: 15
-  bullet: {fileID: 7153838489509484870, guid: 0e0a2dfb39b62424785e0dfffb98c488, type: 3}
+  bullet: {fileID: 0}
   bulletVelocity: 5
   fireFrom: {fileID: 7175387285228105714}
   fireRate: 2
@@ -151,10 +152,14 @@ MonoBehaviour:
   volley: 0
   volleyAmmount: 3
   volleySize: 50
+  burstFire: 0
+  waitFor: 0
+  fireFor: 0
   ultraInstinct: 0
   doom: 0
   health: 3
-  iFrames: 1
+  iFrames: -1
+  hurtEffect: {fileID: 0}
   deathObjects: []
 --- !u!61 &-5936890897565431283
 BoxCollider2D:
@@ -215,6 +220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Damage
   isOnHostile: 1
+  isOnPlayerBullet: 0
   hurtPlayer: 1
   hurtEnemy: 0
   damageAmmount: 1

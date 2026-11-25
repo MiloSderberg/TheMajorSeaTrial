@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 726311059704637488}
   - component: {fileID: -9027785134947487798}
   - component: {fileID: 4971414152115578542}
+  - component: {fileID: -7925128056580989270}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -134,6 +135,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b2db686a42ef54fa3dc0e1e5e7b3b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Damage
+  isOnHostile: 0
+  isOnPlayerBullet: 0
   hurtPlayer: 1
   hurtEnemy: 0
   damageAmmount: 1
@@ -187,3 +190,41 @@ PolygonCollider2D:
       - {x: -0.5, y: -0.28866667}
       - {x: 0.5, y: -0.28866667}
   m_UseDelaunayMesh: 1
+--- !u!114 &-7925128056580989270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7153838489509484870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 518cd38fc61f2e948be3ff4d97a78cc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Hostile
+  pice: 1
+  speed: 0
+  zigzag: 0
+  zigzagSpeed: 0
+  zigzagRate: 0
+  backForth: 0
+  backForthRate: 0
+  spin: 0
+  spinSpeed: 0
+  bullet: {fileID: 0}
+  bulletVelocity: 0
+  fireFrom: {fileID: 0}
+  fireRate: 0
+  rotOffset: 0
+  volley: 0
+  volleyAmmount: 0
+  volleySize: 0
+  burstFire: 0
+  waitFor: 0
+  fireFor: 0
+  ultraInstinct: 0
+  doom: 0
+  health: 1
+  iFrames: -1
+  hurtEffect: {fileID: 0}
+  deathObjects: []

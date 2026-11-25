@@ -4,6 +4,8 @@ public class Hostile : MonoBehaviour
 {
     Rigidbody2D rb;
 
+    public bool pice;
+
     [Header("Movement")]
     public float speed;
 
@@ -32,6 +34,12 @@ public class Hostile : MonoBehaviour
     public float volleyAmmount;
     public float volleySize;
 
+    public bool burstFire;
+    public float waitFor;
+    float waitTimer;
+    public float fireFor;
+    float fireForTimer;
+
     [Header("\"Difficulty\"")]
     public bool ultraInstinct;
     public bool doom;
@@ -51,27 +59,37 @@ public class Hostile : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        zigzagRand = Random.Range(0f, 1f);
-        backForthRand = Random.Range(0f, 1f);
+        zigzagRand = Random.Range(0f, 6.28f);
+        backForthRand = Random.Range(0f, 6.28f);
         fireRate = fireRate + Random.Range(0f, .1f * fireRate);
         if (spin == false) spinSpeed = 0;
         currentHealth = health;
+        fireForTimer = 1;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Move();
-        
-        if (bullet != null)
+        Timers();
+
+        if (!pice)
         {
-            Attack();
+            Move();
+
+            if (fireForTimer > 0)
+            {
+                if (bullet != null)
+                {
+                    Attack();
+                }
+            }
+            if (waitTimer <= 0 && burstFire)
+            {
+                fireForTimer = fireFor;
+                waitTimer = waitFor + fireFor;
+            }
         }
 
-        if (iTime >= 0)
-        {
-            iTime -= Time.deltaTime;
-        }
         if (currentHealth <= 0)
         {
             Die();
@@ -81,6 +99,22 @@ public class Hostile : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         Hurt(collision);
+    }
+
+    void Timers()
+    {
+        if (iTime >= 0)
+        {
+            iTime -= Time.deltaTime;
+        }
+        if (waitTimer >= 0)
+        {
+            waitTimer -= Time.deltaTime;
+        }
+        if (fireForTimer >= 0 && burstFire)
+        {
+            fireForTimer -= Time.deltaTime;
+        }
     }
 
     void Hurt(Collider2D collision)
@@ -93,6 +127,10 @@ public class Hostile : MonoBehaviour
                 if (hurtEffect != null) Instantiate(hurtEffect, transform);
                 currentHealth -= dmg.damageAmmount;
                 iTime = iFrames;
+                if (dmg.isOnPlayerBullet)
+                {
+                    Destroy(collision.gameObject);
+                }
             }
         }
     }
