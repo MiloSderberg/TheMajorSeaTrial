@@ -1424,6 +1424,17 @@ MonoBehaviour:
     enemiesPer: 1
     spawnRate: 2
     spawnTimer: 0
+  - enemy: {fileID: 337569337194447443, guid: a9eba716c43f68b46b31440300eb5e34, type: 3}
+    spawnLocations:
+    - {fileID: 748544681}
+    - {fileID: 1539925190}
+    - {fileID: 513857179}
+    - {fileID: 1062482733}
+    - {fileID: 1163183543}
+    randSpawn: 1
+    enemiesPer: 1
+    spawnRate: 600
+    spawnTimer: 0
 --- !u!1 &949758805
 GameObject:
   m_ObjectHideFlags: 0
