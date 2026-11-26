@@ -160,7 +160,7 @@ public class Hostile : MonoBehaviour
         }
         if (spin)
         {
-            transform.rotation = Quaternion.AngleAxis(Time.time * spinSpeed, Vector3.forward);
+            transform.rotation = Quaternion.AngleAxis((Time.time * spinSpeed) + Random.Range(0f, 6.28f), Vector3.forward);
         }
     }
     void ZigZag()

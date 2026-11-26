@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     InputAction attack;
 
     [Header("Health")]
+    public GameObject[] healths;
     public int health;
     int currentHealth;
     public float iFrames;
@@ -59,6 +60,22 @@ public class Player : MonoBehaviour
     void OnTriggerStay2D(Collider2D collision)
     {
         Hurt(collision);
+        HealthBar();
+    }
+
+    void HealthBar()
+    {
+        for (int i = 0; i < healths.Length; i++)
+        {
+            if (i > currentHealth - 1)
+            {
+                healths[i].SetActive(false);
+            }
+            else
+            {
+                healths[i].SetActive(true);
+            }
+        }
     }
 
     void Hurt(Collider2D collision)

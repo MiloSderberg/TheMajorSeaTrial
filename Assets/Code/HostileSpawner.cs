@@ -9,6 +9,10 @@ public class HostileSpawner : MonoBehaviour
     void Start()
     {
         height = Camera.main.orthographicSize;
+        foreach (Enemy e in enemies)
+        {
+            e.spawnTimer = e.spawnRate;
+        }
     }
 
     // Update is called once per frame
