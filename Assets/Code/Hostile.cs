@@ -1,0 +1,229 @@
+using UnityEngine;
+
+public class Hostile : MonoBehaviour
+{
+    Rigidbody2D rb;
+
+    public bool pice;
+
+    [Header("Movement")]
+    public float speed;
+
+    [Header("Patterns")]
+    public bool zigzag;
+    public float zigzagSpeed;
+    public float zigzagRate;
+    float zigzagRand;
+
+    public bool backForth;
+    public float backForthRate;
+    float backForthRand;
+
+    public bool spin;
+    public float spinSpeed;
+
+    [Header("Attacks")]
+    public GameObject bullet;
+    public float bulletVelocity;
+    public Transform fireFrom;
+    public float fireRate;
+    float fireTimer;
+    public float rotOffset;
+
+    public bool volley;
+    public float volleyAmmount;
+    public float volleySize;
+
+    public bool burstFire;
+    public float waitFor;
+    float waitTimer;
+    public float fireFor;
+    float fireForTimer;
+
+    [Header("\"Difficulty\"")]
+    public bool ultraInstinct;
+    public bool doom;
+
+    [Header("Health")]
+    public int health;
+    int currentHealth;
+    public float iFrames;
+    float iTime;
+    public GameObject hurtEffect;
+
+    [Header("Death")]
+    public GameObject[] deathObjects;
+
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        zigzagRand = Random.Range(0f, 6.28f);
+        backForthRand = Random.Range(0f, 6.28f);
+        fireRate = fireRate + Random.Range(0f, .1f * fireRate);
+        if (spin == false) spinSpeed = 0;
+        currentHealth = health;
+        fireForTimer = 1;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        Timers();
+
+        if (!pice)
+        {
+            Move();
+
+            if (fireForTimer > 0)
+            {
+                if (bullet != null)
+                {
+                    Attack();
+                }
+            }
+            if (waitTimer <= 0 && burstFire)
+            {
+                fireForTimer = fireFor;
+                waitTimer = waitFor + fireFor;
+            }
+        }
+
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        Hurt(collision);
+    }
+
+    void Timers()
+    {
+        if (iTime >= 0)
+        {
+            iTime -= Time.deltaTime;
+        }
+        if (waitTimer >= 0)
+        {
+            waitTimer -= Time.deltaTime;
+        }
+        if (fireForTimer >= 0 && burstFire)
+        {
+            fireForTimer -= Time.deltaTime;
+        }
+    }
+
+    void Hurt(Collider2D collision)
+    {
+        Damage dmg = collision.GetComponent<Damage>();
+        if (dmg != null)
+        {
+            if (dmg.hurtEnemy && iTime <= 0)
+            {
+                if (hurtEffect != null) Instantiate(hurtEffect, transform);
+                currentHealth -= dmg.damageAmmount;
+                iTime = iFrames;
+                if (dmg.isOnPlayerBullet)
+                {
+                    Destroy(collision.gameObject);
+                }
+            }
+        }
+    }
+    
+    public void Die()
+    {
+        foreach (GameObject g in deathObjects)
+        {
+            Instantiate(g, transform);
+        }
+        Destroy(gameObject);
+    }
+
+    void Move()
+    {
+        if (backForth)
+        {
+            BackForth();
+        }
+        else
+        {
+            rb.linearVelocityX = -speed;
+        }
+        if (zigzag)
+        {
+            ZigZag();
+        }
+        if (spin)
+        {
+            transform.rotation = Quaternion.AngleAxis((Time.time * spinSpeed) + Random.Range(0f, 6.28f), Vector3.forward);
+        }
+    }
+    void ZigZag()
+    {
+        float oscillate = Mathf.Sin((Time.time * zigzagRate) + zigzagRand);
+        rb.linearVelocityY = zigzagSpeed * oscillate;
+    }
+    void BackForth()
+    {
+        float oscillate = Mathf.Sin((Time.time * backForthRate) + backForthRand);
+        rb.linearVelocityX = -speed * Mathf.Abs(oscillate);
+    }
+
+    void Attack()
+    {
+        fireTimer -= Time.deltaTime;
+        if (fireTimer <= 0)
+        {
+            if (volley)
+            {
+                int s = (int)volleyAmmount / 2;
+                for (int i = 1; i < volleyAmmount + 1; i++)
+                {
+                    bool isEven = false;
+                    if (volleyAmmount % 2 == 0)
+                    {
+                        isEven = true;
+                    }
+
+                    float rot = RotCalc(i, s, isEven);
+                    FireBullet(rot);
+                }
+            }
+            else
+            {
+                FireBullet(0);
+            }
+        }
+    }
+    float RotCalc(int i, int s, bool isEven)
+    {
+        float rot = 0;
+        if (i <= s)
+        {
+            rot = ((volleySize / volleyAmmount) / 2) * i;
+        }
+        else if (i == s + 1 && isEven == false)
+        {
+            rot = 0;
+        }
+        else
+        {
+            rot = isEven ? -((volleySize / volleyAmmount) / 2) * (i - s)
+                : -((volleySize / volleyAmmount) / 2) * (i - s - 1);
+        }
+        return rot;
+    }
+
+    void FireBullet(float rot)
+    {
+        GameObject spawnedBullet = Instantiate(bullet, fireFrom.position, Quaternion.AngleAxis(rot + rotOffset + (Time.time * spinSpeed), transform.forward));
+        Vector2 dir = Quaternion.AngleAxis(rot, Vector3.forward) * -transform.right;
+        spawnedBullet.GetComponent<Rigidbody2D>().linearVelocity = dir * bulletVelocity;
+        fireTimer = fireRate;
+    }
+}
