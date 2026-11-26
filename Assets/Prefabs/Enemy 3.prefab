@@ -138,10 +138,10 @@ MonoBehaviour:
   pice: 0
   speed: 3
   zigzag: 1
-  zigzagSpeed: 1
-  zigzagRate: 1
+  zigzagSpeed: 2
+  zigzagRate: 2
   backForth: 1
-  backForthRate: 1
+  backForthRate: 2
   spin: 1
   spinSpeed: 300
   bullet: {fileID: 0}

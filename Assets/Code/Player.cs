@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
     int currentHealth;
     public float iFrames;
     float iTime;
+    public GameObject[] hurtEffects;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -56,7 +57,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void OnTriggerStay2D(Collider2D collision)
+    void OnTriggerStay2D(Collider2D collision) 
     {
         Hurt(collision);
         HealthBar();
@@ -86,6 +87,12 @@ public class Player : MonoBehaviour
             {
                 currentHealth -= dmg.damageAmmount;
                 iTime = iFrames;
+                
+                foreach (GameObject h in hurtEffects)
+                {
+                    Instantiate(h);
+                }
+
                 if (dmg.isOnHostile)
                 {
                     collision.gameObject.GetComponent<Hostile>().Die();
@@ -128,6 +135,11 @@ public class Player : MonoBehaviour
         {
             if (w.fireTimer <= 0)
             {
+                foreach (GameObject f in w.fireEffects)
+                {
+                    Instantiate(f);
+                }
+
                 GameObject spawnedBullet = Instantiate(w.bullet, w.fireFrom.transform.position, w.weapon.transform.rotation);
                 spawnedBullet.GetComponent<Rigidbody2D>().linearVelocity = w.weapon.transform.up * w.bulletVelocity;
                 w.fireTimer = w.fireRate;
@@ -155,6 +167,7 @@ public class Weapons
     public Transform weaponPos;
     public Transform fireFrom;
     public GameObject bullet;
+    public GameObject[] fireEffects;
     public float fireRate;
     [HideInInspector] public float fireTimer;
     public float responsiveness;
