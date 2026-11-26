@@ -44,7 +44,6 @@ public class Player : MonoBehaviour
         Rotate();
 
         rb.linearVelocity = rb.linearVelocity * friction;
-        print(currentHealth);
 
         if (weapons != null)
         {
