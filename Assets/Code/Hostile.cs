@@ -25,6 +25,7 @@ public class Hostile : MonoBehaviour
     [Header("Attacks")]
     public GameObject bullet;
     public float bulletVelocity;
+    public GameObject[] fireEffects;
     public Transform fireFrom;
     public float fireRate;
     float fireTimer;
@@ -197,6 +198,10 @@ public class Hostile : MonoBehaviour
             else
             {
                 FireBullet(0);
+            }
+            foreach (GameObject f in fireEffects)
+            {
+                Instantiate(f);
             }
         }
     }

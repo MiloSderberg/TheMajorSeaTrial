@@ -147,6 +147,8 @@ MonoBehaviour:
   spinSpeed: 15
   bullet: {fileID: 7153838489509484870, guid: 0e0a2dfb39b62424785e0dfffb98c488, type: 3}
   bulletVelocity: 5
+  fireEffects:
+  - {fileID: 7590542614611140676, guid: cf885a3c107d52c4a8f1ed7a7699046d, type: 3}
   fireFrom: {fileID: 7175387285228105714}
   fireRate: 2
   rotOffset: 90
