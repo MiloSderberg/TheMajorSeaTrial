@@ -160,7 +160,7 @@ MonoBehaviour:
   fireFor: 0.9
   ultraInstinct: 0
   doom: 0
-  health: 3
+  health: 4
   iFrames: -1
   hurtEffect: {fileID: 0}
   deathObjects: []

@@ -2831,7 +2831,7 @@ MonoBehaviour:
     bullet: {fileID: 1028028367631107018, guid: b22bb7bee0cdc3244bc638b06066d928, type: 3}
     fireEffects:
     - {fileID: 7590542614611140676, guid: 48a678262b5e1774c95ab74ec6cfbebf, type: 3}
-    fireRate: 0.25
+    fireRate: 1
     fireTimer: 0
     responsiveness: 5
     bulletVelocity: 25

@@ -172,7 +172,7 @@ public class Hostile : MonoBehaviour
     void BackForth()
     {
         float oscillate = Mathf.Sin((Time.time * backForthRate) + backForthRand);
-        rb.linearVelocityX = -speed * Mathf.Abs(oscillate);
+        rb.linearVelocityX = -speed - (speed * oscillate);
     }
 
     void Attack()
